@@ -67,7 +67,7 @@ class CrowdAPI:
     else:
       return {"status": False, "code": req.status_code, "reason": req.content}
 
-  def set_user_attribute(self, **kwargs)
+  def set_user_attribute(self, **kwargs):
     if "username" not in kwargs:
       raise ValueError, "Must pass username"
 
