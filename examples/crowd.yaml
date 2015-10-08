@@ -1,0 +1,8 @@
+---
+crowd_url: "https://<uri>"
+api_url: "https://<uri>/crowd/rest/usermanagement/latest"
+app_name: ""
+app_password: ""
+mail_sender: ""
+mail_server: "localhost"
+mail_recipients_cc: ""
