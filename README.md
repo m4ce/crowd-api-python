@@ -10,7 +10,7 @@ The API currently supports the following:
 * Retrieve user details
 * Retrieve user groups
 
-Pull requests to add additional API features are very welcome. I only implemented what I needed.
+Pull requests to add additional API features (as documented at https://developer.atlassian.com/display/CROWDDEV/Crowd+REST+Resources) are very welcome. I only implemented what I needed.
 
 ## Usage
 ```
