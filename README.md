@@ -17,6 +17,7 @@ Pull requests to add additional API features (as documented at https://developer
 from crowd import CrowdAPI
 crowd = CrowdAPI(api_url = "https://<uri>/crowd/rest/usermanagement/latest", app_name = "crowd", app_password = "secure")
 
+# If the password attribute is not specified, a random one will be generated and returned by create_user()
 req = crowd.create_user(name = "foobar", "first-name" = "Foo", "last-name" = "Bar", "display-name" = "Foo Bar", "email" = "foo@bar.com")
 if req['status']:
   print "Created, password is " + req['password']
