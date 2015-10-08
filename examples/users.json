@@ -1,0 +1,12 @@
+[
+    {
+        "display-name": "Foo Bar",
+        "email": "foo@bar.com",
+        "first-name": "Foo",
+        "groups": [
+            "users"
+        ],
+        "last-name": "Bar",
+        "name": "foobar"
+    }
+]
