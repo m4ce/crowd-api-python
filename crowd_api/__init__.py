@@ -114,7 +114,7 @@ class CrowdAPI:
     else:
       return {"status": False, "code": req.status_code, "reason": req.content}
 
-  def add_user_to_group(self, **kwargs)
+  def add_user_to_group(self, **kwargs):
     req = self.api_post("/user/group/direct?username=" + kwargs['username'], {"name": kwargs['groupname']})
     if req.status_code == 201:
       return {"status": True}
