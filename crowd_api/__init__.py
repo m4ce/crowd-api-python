@@ -87,21 +87,26 @@ class CrowdAPI:
       return {"status": False, "code": req.status_code, "reason": req.content}
 
   def create_user(self, **kwargs):
+    user = {}
+
+    for k, v in kwargs.itemitems():
+      user[k.replace('_', '-')] = v
+
     if 'password' not in kwargs:
-      kwargs['password'] = {}
-      kwargs['password']['value'] = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
+      user['password'] = {}
+      user['password']['value'] = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(8))
       req_password_change = True
     else:
       req_password_change = False
 
-    kwargs['active'] = True
+    user['active'] = True
 
-    req = self.api_post("/user", kwargs)
+    req = self.api_post("/user", user)
     if req.status_code == 201:
       # user should change the password at their next login
       if req_password_change:
-        self.set_user_attribute(username = kwargs['name'], attribute_name = "requiresPasswordChange", attribute_value = True)
-        return {"status": True, "password": kwargs['password']['value']}
+        self.set_user_attribute(username = user['name'], attribute_name = "requiresPasswordChange", attribute_value = True)
+        return {"status": True, "password": user['password']['value']}
       else:
         return {"status": True}
     else:
