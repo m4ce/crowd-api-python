@@ -4,7 +4,7 @@ version = '0.0.1'
 
 setup(
   name = 'crowd-api',
-  packages = ['crowd_api', 'examples'],
+  packages = ['crowd_api'],
   version = version,
   description = 'Python library for Atlassian Crowd',
   author = 'Matteo Cerutti',

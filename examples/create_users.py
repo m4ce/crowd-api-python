@@ -9,7 +9,7 @@
 
 import os
 import sys
-from crowd import CrowdAPI
+from crowd_api import CrowdAPI
 import logging
 import jinja2
 import yaml
