@@ -12,6 +12,14 @@ The API currently supports the following:
 
 Pull requests to add additional API features (as documented at https://developer.atlassian.com/display/CROWDDEV/Crowd+REST+Resources) are very welcome. I only implemented what I needed.
 
+## Installation
+
+You can install the module using pip.
+
+```
+pip install crowd-api
+```
+
 ## Usage
 ```
 from crowd import CrowdAPI
