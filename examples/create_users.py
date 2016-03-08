@@ -112,25 +112,25 @@ if __name__ == "__main__":
 
   for user in users:
     # does the user exist already?
-    user_req = crowd.get_user(user['name'])
+    user_req = crowd.get_user(username = user['name'])
     if user_req['status']:
       logger.info("User " + user['name'] + " already exists, checking group memberships")
 
       # get groups
-      groups_req = crowd.get_user_groups(user['name'])
+      groups_req = crowd.get_user_groups(username = user['name'])
       if groups_req['status']:
         new = []
         for usergroup in user['groups']:
           if not usergroup in groups_req['groups']:
             # add user to group
-            group_req = crowd.add_user_to_group(user['name'], usergroup)
+            group_req = crowd.add_user_to_group(username = user['name'], groupname = usergroup)
             if group_req['status']:
               logger.info("User " + user['name'] + " added to group " + usergroup)
             else:
               logger.info("Failed to add user " + user['name'] + " to group " + usergroup + " (" + crowd_groups['reason'] + ")")
     else:
       logger.info("Creating user " + user['name'])
-      create_req = crowd.create_user({"name": user['name'], "last-name": user['last-name'], "first-name": user['first-name'], "display-name": user['display-name'], "email": user['email']})
+      create_req = crowd.create_user(name = user['name'], "last-name" = user['last-name'], "first-name" = user['first-name'], "display-name" = user['display-name'], email = user['email'])
       if create_req['status']:
         if 'password' in create_req:
           user['password'] = create_req['password']
@@ -138,7 +138,7 @@ if __name__ == "__main__":
         logger.info(user)
 
         for usergroup in user['groups']:
-          group_req = crowd.add_user_to_group(user['name'], usergroup)
+          group_req = crowd.add_user_to_group(username = user['name'], groupname = usergroup)
           if group_req['status']:
             logger.info("User " + user['name'] + " added to group " + usergroup)
           else:
