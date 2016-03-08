@@ -130,7 +130,7 @@ if __name__ == "__main__":
               logger.info("Failed to add user " + user['name'] + " to group " + usergroup + " (" + crowd_groups['reason'] + ")")
     else:
       logger.info("Creating user " + user['name'])
-      create_req = crowd.create_user(name = user['name'], "last-name" = user['last-name'], "first-name" = user['first-name'], "display-name" = user['display-name'], email = user['email'])
+      create_req = crowd.create_user(name = user['name'], last_name = user['last-name'], first_name = user['first-name'], display_name = user['display-name'], email = user['email'])
       if create_req['status']:
         if 'password' in create_req:
           user['password'] = create_req['password']
