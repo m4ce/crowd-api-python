@@ -40,7 +40,7 @@ class CrowdAPI:
 
   def get_user(self, **kwargs):
     if "username" not in kwargs:
-      raise ValueError, "Must pass username"
+      raise ValueError("Must pass username")
 
     req = self.api_get("/user?username=" + kwargs['username'] + "&expand=attributes")
     if req.status_code == 200:
@@ -54,7 +54,7 @@ class CrowdAPI:
     groups = []
 
     if "username" not in kwargs:
-      raise ValueError, "Must pass username"
+      raise ValueError("Must pass username")
 
     req = self.api_get("/user/group/direct?username=" + kwargs['username'])
     if req.status_code == 200:
@@ -69,13 +69,13 @@ class CrowdAPI:
 
   def set_user_attribute(self, **kwargs):
     if "username" not in kwargs:
-      raise ValueError, "Must pass username"
+      raise ValueError("Must pass username")
 
     if "attribute_name" not in kwargs:
-      raise ValueError, "Must pass attribute_name"
+      raise ValueError("Must pass attribute_name")
 
     if "attribute_value" not in kwargs:
-      raise ValueError, "Must pass attribute_value"
+      raise ValueError("Must pass attribute_value")
     else:
       if not isinstance(kwargs['attribute_value'], list):
         kwargs['attribute_value'] = [ kwargs['attribute_value'] ]
