@@ -113,7 +113,7 @@ class CrowdAPI:
       return {"status": False, "code": req.status_code, "reason": req.content}
 
   def create_group(self, **kwargs):
-    req = self.api_post("/group", {"groupname": kwargs['name'], "type": "GROUP", "description": kwargs['description'], "active": True})
+    req = self.api_post("/group", {"name": kwargs['name'], "type": "GROUP", "description": kwargs['description'], "active": True})
     if req.status_code == 201:
       return {"status": True}
     else:
