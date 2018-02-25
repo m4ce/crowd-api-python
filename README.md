@@ -49,6 +49,11 @@ if req['status']:
 req = crowd.get_user_groups(username = "foobar")
 if req['status']:
   print "Groups are " + req['groups']
+
+req = crowd.get_group(name = "users")
+if req['status']:
+  info = req["group"]
+  print info['description']
 ```
 
 ## Examples
