@@ -125,3 +125,11 @@ class CrowdAPI:
       return {"status": True}
     else:
       return {"status": False, "code": req.status_code, "reason": req.content}
+
+  def get_group(self, **kwargs):
+      req = self.api_get("/group?groupname=" + kwargs['name'] + "&expand=attributes")
+      if req.status_code == 200:
+          group = req.json()
+          return {"status": True, "group": req.json()}
+      else:
+        return {"status": False, "code": req.status_code, "reason": req.content}
