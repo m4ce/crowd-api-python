@@ -67,6 +67,110 @@ class CrowdAPI:
     else:
       return {"status": False, "code": req.status_code, "reason": req.content}
 
+  def get_group_users(self, **kwargs):
+    users = []
+
+    if "groupname" not in kwargs:
+      raise ValueError, "Must pass username"
+
+    req = self.api_get("/group/user/direct?groupname=" + kwargs['groupname'])
+    if req.status_code == 200:
+      for user in req.json()['users']:
+        users.append(user['name'])
+
+      return {"status": True, "users": users}
+    if req.status_code == 404:
+      return {"status": False, "users": []}
+    else:
+      return {"status": False, "code": req.status_code, "reason": req.content}
+
+  def get_nested_group_users(self, **kwargs):
+    users = []
+
+    if "groupname" not in kwargs:
+      raise ValueError, "Must pass groupname"
+
+    req = self.api_get("/group/user/nested?groupname=" + kwargs['groupname'])
+    if req.status_code == 200:
+      for user in req.json()['users']:
+        users.append(user['name'])
+
+      return {"status": True, "users": users}
+    if req.status_code == 404:
+      return {"status": False, "users": []}
+    else:
+      return {"status": False, "code": req.status_code, "reason": req.content}
+
+
+
+  def get_parent_groups(self, **kwargs):
+    pgroups = []
+
+    if "groupname" not in kwargs:
+      raise ValueError, "Must pass groupname"
+
+    req = self.api_get("/group/parent-group/direct?groupname=" + kwargs['groupname'])
+    if req.status_code == 200:
+      for pgroup in req.json()['groups']:
+        pgroups.append(pgroup['name'])
+
+      return {"status": True, "pgroups": pgroups}
+    if req.status_code == 404:
+      return {"status": False, "pgroups": []}
+    else:
+      return {"status": False, "code": req.status_code, "reason": req.content}
+
+  def get_parent_groupsv2(self, **kwargs):
+    groups = []
+
+    if "groupname" not in kwargs:
+      raise ValueError, "Must pass groupname"
+
+    req = self.api_get("/group/parent-group/direct?groupname=" + kwargs['groupname'])
+    if req.status_code == 200:
+      for group in req.json()['groups']:
+        groups.append(group['name'])
+
+      return {"status": True, "groups": groups}
+    if req.status_code == 404:
+      return {"status": False, "groups": []}
+    else:
+      return {"status": False, "code": req.status_code, "reason": req.content}
+
+
+  def get_all_groups(self, **kwargs):
+    groups = []
+
+
+    req = self.api_get("/search?entity-type=group")
+    if req.status_code == 200:
+      for group in req.json()['groups']:
+        groups.append(group['name'])
+
+      return {"status": True, "groups": groups}
+    if req.status_code == 404:
+      return {"status": False, "groups": []}
+    else:
+      return {"status": False, "code": req.status_code, "reason": req.content}
+
+
+  def get_all_users(self, **kwargs):
+    users = []
+
+
+    req = self.api_get("/search?entity-type=user")
+    if req.status_code == 200:
+      for user in req.json()['users']:
+        users.append(user['name'])
+
+      return {"status": True, "users": users}
+    if req.status_code == 404:
+      return {"status": False, "users": []}
+    else:
+      return {"status": False, "code": req.status_code, "reason": req.content}
+
+
+
   def set_user_attribute(self, **kwargs):
     if "username" not in kwargs:
       raise ValueError("Must pass username")
