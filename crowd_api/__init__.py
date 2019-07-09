@@ -30,12 +30,18 @@ class CrowdAPI:
     else:
       self.verify_ssl = kwargs['verify_ssl']
 
+    if 'timeout' not in kwargs:
+      self.timeout = 10
+    else:
+      self.timeout = kwargs['timeout']
+
+
   def api_get(self, query):
-    req = requests.get(self.api_url + query, headers = {"Content-Type": "application/json", "Accept": "application/json"}, auth = self.auth, verify = self.verify_ssl)
+    req = requests.get(self.api_url + query, headers = {"Content-Type": "application/json", "Accept": "application/json"}, auth = self.auth, verify = self.verify_ssl, timeout=self.timeout)
     return req
 
   def api_post(self, query, data):
-    req = requests.post(self.api_url + query, headers = {"Content-Type": "application/json", "Accept": "application/json"}, auth = self.auth, data = json.dumps(data), verify = self.verify_ssl)
+    req = requests.post(self.api_url + query, headers = {"Content-Type": "application/json", "Accept": "application/json"}, auth = self.auth, data = json.dumps(data), verify = self.verify_ssl, timeout=self.timeout)
     return req
 
   def get_user(self, **kwargs):
