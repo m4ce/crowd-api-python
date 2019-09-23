@@ -22,7 +22,7 @@ pip install crowd-api
 
 ## Usage
 ```
-from crowd import CrowdAPI
+from crowd_api import CrowdAPI
 crowd = CrowdAPI(api_url = "https://<uri>/crowd/rest/usermanagement/latest", app_name = "crowd", app_password = "secure")
 
 # If the password attribute is not specified, a random one will be generated and returned by create_user()
