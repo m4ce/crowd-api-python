@@ -146,9 +146,12 @@ class CrowdAPI:
 
   def get_all_groups(self, **kwargs):
     groups = []
+    
+    if "max_results" not in kwargs:
+      max_results = 1000
 
+    req = self.api_get("/search?entity-type=group&max-results=%s" % kwargs['max_results'])
 
-    req = self.api_get("/search?entity-type=group")
     if req.status_code == 200:
       for group in req.json()['groups']:
         groups.append(group['name'])
@@ -163,8 +166,10 @@ class CrowdAPI:
   def get_all_users(self, **kwargs):
     users = []
 
+    if "max_results" not in kwargs:
+      max_results = 1000
 
-    req = self.api_get("/search?entity-type=user")
+    req = self.api_get("/search?entity-type=user&max-results=%s" % kwargs['max_results'])
     if req.status_code == 200:
       for user in req.json()['users']:
         users.append(user['name'])
