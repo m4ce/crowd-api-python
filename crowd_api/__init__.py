@@ -48,7 +48,7 @@ class CrowdAPI:
     if "username" not in kwargs:
       raise ValueError("Must pass username")
 
-    req = self.api_get("/user?username=" + kwargs['username'] + "&expand=attributes")
+    req = self.api_get("/user?username={}&expand=attributes".format(kwargs['username']))
     if req.status_code == 200:
       return {"status": True, "user": req.json()}
     if req.status_code == 404:
@@ -59,13 +59,10 @@ class CrowdAPI:
   def get_user_groups(self, **kwargs):
     groups = []
 
-    if "max_results" not in kwargs:
-      kwargs['max_results'] = 1000
-
     if "username" not in kwargs:
       raise ValueError("Must pass username")
 
-    req = self.api_get("/user/group/direct?username=" + kwargs['username'] + "&max-results=" + str(kwargs['max_results']))
+    req = self.api_get("/user/group/direct?username={}&max-results={}".format(kwargs['username'], str(kwargs.get('max_results', 1000))))
     if req.status_code == 200:
       for group in req.json()['groups']:
         groups.append(group['name'])
@@ -79,13 +76,10 @@ class CrowdAPI:
   def get_group_users(self, **kwargs):
     users = []
 
-    if "max_results" not in kwargs:
-      kwargs['max_results'] = 1000
-
     if "groupname" not in kwargs:
       raise ValueError, "Must pass username"
 
-    req = self.api_get("/group/user/direct?groupname=" + kwargs['groupname'] + "&max-results=" + str(kwargs['max_results']))
+    req = self.api_get("/group/user/direct?groupname={}&max-results={}".format(kwargs['groupname'], str(kwargs.get('max_results', 1000))))
     if req.status_code == 200:
       for user in req.json()['users']:
         users.append(user['name'])
@@ -102,7 +96,7 @@ class CrowdAPI:
     if "groupname" not in kwargs:
       raise ValueError, "Must pass groupname"
 
-    req = self.api_get("/group/user/nested?groupname=" + kwargs['groupname'])
+    req = self.api_get("/group/user/nested?groupname={}".format(kwargs['groupname']))
     if req.status_code == 200:
       for user in req.json()['users']:
         users.append(user['name'])
@@ -121,7 +115,7 @@ class CrowdAPI:
     if "groupname" not in kwargs:
       raise ValueError, "Must pass groupname"
 
-    req = self.api_get("/group/parent-group/direct?groupname=" + kwargs['groupname'])
+    req = self.api_get("/group/parent-group/direct?groupname={}".format(kwargs['groupname']))
     if req.status_code == 200:
       for pgroup in req.json()['groups']:
         pgroups.append(pgroup['name'])
@@ -138,7 +132,7 @@ class CrowdAPI:
     if "groupname" not in kwargs:
       raise ValueError, "Must pass groupname"
 
-    req = self.api_get("/group/parent-group/direct?groupname=" + kwargs['groupname'])
+    req = self.api_get("/group/parent-group/direct?groupname={}".format(kwargs['groupname']))
     if req.status_code == 200:
       for group in req.json()['groups']:
         groups.append(group['name'])
@@ -152,11 +146,8 @@ class CrowdAPI:
 
   def get_all_groups(self, **kwargs):
     groups = []
-    
-    if "max_results" not in kwargs:
-      kwargs['max_results'] = 1000
 
-    req = self.api_get("/search?entity-type=group&max-results=%s" % kwargs['max_results'])
+    req = self.api_get("/search?entity-type=group&max-results={}".format(kwargs.get('max_results', 1000)))
 
     if req.status_code == 200:
       for group in req.json()['groups']:
@@ -172,10 +163,7 @@ class CrowdAPI:
   def get_all_users(self, **kwargs):
     users = []
 
-    if "max_results" not in kwargs:
-      kwargs['max_results'] = 1000
-
-    req = self.api_get("/search?entity-type=user&max-results=%s" % kwargs['max_results'])
+    req = self.api_get("/search?entity-type=user&max-results={}".format(kwargs.get('max_results', 1000)))
     if req.status_code == 200:
       for user in req.json()['users']:
         users.append(user['name'])
@@ -201,7 +189,7 @@ class CrowdAPI:
       if not isinstance(kwargs['attribute_value'], list):
         kwargs['attribute_value'] = [ kwargs['attribute_value'] ]
 
-    req = self.api_post("/user/attribute?username=" + kwargs['username'], {"attributes": [{"name": kwargs['attribute_name'], "values": kwargs['attribute_value']}]})
+    req = self.api_post("/user/attribute?username={}".format(kwargs['username']), {"attributes": [{"name": kwargs['attribute_name'], "values": kwargs['attribute_value']}]})
     if req.status_code == 204:
       return {"status": True}
     else:
@@ -241,14 +229,14 @@ class CrowdAPI:
       return {"status": False, "code": req.status_code, "reason": req.content}
 
   def add_user_to_group(self, **kwargs):
-    req = self.api_post("/user/group/direct?username=" + kwargs['username'], {"name": kwargs['groupname']})
+    req = self.api_post("/user/group/direct?username={}".format(kwargs['username']), {"name": kwargs['groupname']})
     if req.status_code == 201:
       return {"status": True}
     else:
       return {"status": False, "code": req.status_code, "reason": req.content}
 
   def get_group(self, **kwargs):
-      req = self.api_get("/group?groupname=" + kwargs['name'] + "&expand=attributes")
+      req = self.api_get("/group?groupname={}&expand=attributes".format(kwargs['name']))
       if req.status_code == 200:
           group = req.json()
           return {"status": True, "group": req.json()}
