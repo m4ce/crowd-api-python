@@ -60,7 +60,7 @@ class CrowdAPI:
     groups = []
 
     if "max_results" not in kwargs:
-      max_results = 1000
+      kwargs['max_results'] = 1000
 
     if "username" not in kwargs:
       raise ValueError("Must pass username")
@@ -80,7 +80,7 @@ class CrowdAPI:
     users = []
 
     if "max_results" not in kwargs:
-      max_results = 1000
+      kwargs['max_results'] = 1000
 
     if "groupname" not in kwargs:
       raise ValueError, "Must pass username"
@@ -154,7 +154,7 @@ class CrowdAPI:
     groups = []
     
     if "max_results" not in kwargs:
-      max_results = 1000
+      kwargs['max_results'] = 1000
 
     req = self.api_get("/search?entity-type=group&max-results=%s" % kwargs['max_results'])
 
@@ -173,7 +173,7 @@ class CrowdAPI:
     users = []
 
     if "max_results" not in kwargs:
-      max_results = 1000
+      kwargs['max_results'] = 1000
 
     req = self.api_get("/search?entity-type=user&max-results=%s" % kwargs['max_results'])
     if req.status_code == 200:
