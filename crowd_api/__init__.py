@@ -66,7 +66,7 @@ class CrowdAPI:
             raise ValueError("Must pass username")
 
         req = self.api_get("/user/group/direct?username={}&max-results={}".format(
-            kwargs['username'], str(kwargs.get('max_results', 1000))))
+            kwargs['username'], kwargs.get('max_results', 1000)))
         if req.status_code == 200:
             for group in req.json()['groups']:
                 groups.append(group['name'])
@@ -84,7 +84,7 @@ class CrowdAPI:
             raise ValueError("Must pass username")
 
         req = self.api_get("/group/user/direct?groupname={}&max-results={}".format(
-            kwargs['groupname'], str(kwargs.get('max_results', 1000))))
+            kwargs['groupname'], kwargs.get('max_results', 1000)))
         if req.status_code == 200:
             for user in req.json()['users']:
                 users.append(user['name'])
