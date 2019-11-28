@@ -54,6 +54,22 @@ req = crowd.get_group(name = "users")
 if req['status']:
   info = req["group"]
   print info['description']
+
+req = crowd.search_user(restriction = "email=bob@example.net")
+if req['status']:
+  info = req["user"]
+  print info['status']
+
+req = crowd.search_user(restriction = 'name = "admin*"')
+if req['status']:
+  info = req["group"]
+  print info['description']
+
+req = crowd.search_group(restriction = "name=admins*")
+if req['status']:
+  info = req["group"]
+  print info['description']
+
 ```
 
 ## Examples

@@ -66,7 +66,7 @@ class CrowdAPI:
             raise ValueError("Must pass username")
 
         req = self.api_get("/user/group/direct?username={}&max-results={}".format(
-            kwargs['username'], str(kwargs.get('max_results', 1000))))
+            kwargs['username'], kwargs.get('max_results', 1000)))
         if req.status_code == 200:
             for group in req.json()['groups']:
                 groups.append(group['name'])
@@ -84,7 +84,7 @@ class CrowdAPI:
             raise ValueError("Must pass username")
 
         req = self.api_get("/group/user/direct?groupname={}&max-results={}".format(
-            kwargs['groupname'], str(kwargs.get('max_results', 1000))))
+            kwargs['groupname'], kwargs.get('max_results', 1000)))
         if req.status_code == 200:
             for user in req.json()['users']:
                 users.append(user['name'])
@@ -165,6 +165,25 @@ class CrowdAPI:
         else:
             return {"status": False, "code": req.status_code, "reason": req.content}
 
+    def search_group(self, **kwargs):
+        groups = []
+
+        if 'restriction' not in kwargs:
+            raise ValueError("You need to define a certian restriction")
+
+        req = self.api_get(
+            "/search?entity-type=group&restriction={}&max-results={}".format(kwargs['restriction'], kwargs.get('max_results', 1000)))
+
+        if req.status_code == 200:
+            for group in req.json()['groups']:
+                groups.append(group['name'])
+
+            return {"status": True, "groups": groups}
+        if req.status_code == 404:
+            return {"status": False, "groups": []}
+        else:
+            return {"status": False, "code": req.status_code, "reason": req.content}
+
     def get_all_users(self, **kwargs):
         users = []
 
@@ -179,6 +198,25 @@ class CrowdAPI:
             return {"status": False, "users": []}
         else:
             return {"status": False, "code": req.status_code, "reason": req.content}
+
+    def search_user(self, **kwargs):
+        users = []
+
+        if 'restriction' not in kwargs:
+            raise ValueError("You need to define a certian restriction")
+
+        req = self.api_get(
+            "/search?entity-type=user&restriction={}&max-results={}".format(kwargs['restriction'], kwargs.get('max_results', 1000)))
+        if req.status_code == 200:
+            for user in req.json()['users']:
+                users.append(user['name'])
+
+            return {"status": True, "users": users}
+        if req.status_code == 404:
+            return {"status": False, "users": []}
+        else:
+            return {"status": False, "code": req.status_code, "reason": req.content}
+
 
     def set_user_attribute(self, **kwargs):
         if "username" not in kwargs:
