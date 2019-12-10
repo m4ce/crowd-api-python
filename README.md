@@ -46,6 +46,10 @@ req = crowd.add_user_to_group(username = "foorbar", groupname = "users")
 if req['status']:
   print "Added!"
 
+req = crowd.remove_user_from_group(username = "foorbar", groupname = "users")
+if req['status']:
+  print "Removed!"
+
 req = crowd.get_user_groups(username = "foobar")
 if req['status']:
   print "Groups are " + req['groups']
