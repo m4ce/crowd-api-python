@@ -46,6 +46,11 @@ class CrowdAPI:
                             auth=self.auth, data=json.dumps(data), verify=self.verify_ssl, timeout=self.timeout)
         return req
 
+    def api_delete(self, query, data):
+        req = requests.delete(self.api_url + query, headers={"Content-Type": "application/json", "Accept": "application/json"},
+                              auth=self.auth, data=json.dumps(data), verify=self.verify_ssl, timeout=self.timeout)
+        return req
+
     def get_user(self, **kwargs):
         if "username" not in kwargs:
             raise ValueError("Must pass username")
@@ -285,6 +290,21 @@ class CrowdAPI:
         req = self.api_post(
             "/user/group/direct?username={}".format(kwargs['username']), {"name": kwargs['groupname']})
         if req.status_code == 201:
+            return {"status": True}
+        else:
+            return {"status": False, "code": req.status_code, "reason": req.content}
+
+    def remove_user_from_group(self, **kwargs):
+
+        if "username" not in kwargs:
+            raise ValueError("Must pass username")
+
+        if "groupname" not in kwargs:
+            raise ValueError("Must pass groupname")
+
+        req = self.api_delete(
+            "/user/group/direct?username={}&groupname={}".format(kwargs['username'], kwargs['groupname']), data={})
+        if req.status_code == 204:
             return {"status": True}
         else:
             return {"status": False, "code": req.status_code, "reason": req.content}
