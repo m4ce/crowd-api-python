@@ -69,8 +69,6 @@ class CrowdAPI:
             raise ValueError("Must pass username")
 
         req = self.api_get("/user/attribute?username={}".format(kwargs['username']))
-        # , {
-        #"attributes": [{"name": kwargs['attribute_name'], "values": kwargs['attribute_value']}]})
         if req.status_code == 200:
             return {"status": True, "Attributes": req.content}
         else:
