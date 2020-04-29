@@ -45,6 +45,11 @@ class CrowdAPI:
         req = requests.post(self.api_url + query, headers={"Content-Type": "application/json", "Accept": "application/json"},
                             auth=self.auth, data=json.dumps(data), verify=self.verify_ssl, timeout=self.timeout)
         return req
+    
+    def api_put(self, query, data):
+        req = requests.put(self.api_url + query, headers={"Content-Type": "application/json", "Accept": "application/json"},
+                            auth=self.auth, data=json.dumps(data), verify=self.verify_ssl, timeout=self.timeout)
+        return req
 
     def api_delete(self, query, data):
         req = requests.delete(self.api_url + query, headers={"Content-Type": "application/json", "Accept": "application/json"},
@@ -243,6 +248,28 @@ class CrowdAPI:
         else:
             return {"status": False, "code": req.status_code, "reason": req.content}
 
+    def set_user_activity(self, **kwargs):
+        if "username" not in kwargs:
+            raise ValueError("Must pass username")
+
+        if "active" not in kwargs:
+            raise ValueError("Must pass active (true/false)")
+
+        # fetch current user document
+        user_document = self.api_get(
+            "/user?username={}".format(kwargs['username'])).json()
+
+        # set to active true/false
+        user_document["active"] = kwargs['active']
+
+        # update user object
+        req = self.api_put("/user?username={}".format(kwargs['username']), user_document )
+        if req.status_code == 204:
+            return {"status": True}
+        else:
+            return {"status": False, "code": req.status_code, "reason": req.content}
+
+
     def create_user(self, **kwargs):
         user = {}
 
@@ -278,6 +305,7 @@ class CrowdAPI:
             return {"status": True}
         else:
             return {"status": False, "code": req.status_code, "reason": req.content}
+
 
     def add_user_to_group(self, **kwargs):
 
