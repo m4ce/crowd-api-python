@@ -72,8 +72,10 @@ if req['status']:
 req = crowd.search_group(restriction = "name=admins*")
 if req['status']:
   info = req["group"]
-  print info['description']
+  print info['description']=
 
+# deactivate a certain user
+req = crowd.set_user_activity(username="foobar", active=False)
 ```
 
 ## Examples
