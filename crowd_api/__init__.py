@@ -316,6 +316,18 @@ class CrowdAPI:
         else:
             return {"status": False, "code": req.status_code, "reason": req.content}
 
+    def delete_group(self, **kwargs):
+
+        if "groupname" not in kwargs:
+            raise ValueError("Must pass groupname")
+
+        req = self.api_delete(
+            "/group?groupname={}".format(kwargs['groupname']), data={})
+        if req.status_code == 204:
+            return {"status": True}
+        else:
+            return {"status": False, "code": req.status_code, "reason": req.content}
+
 
     def add_user_to_group(self, **kwargs):
 
