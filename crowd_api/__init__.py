@@ -328,7 +328,6 @@ class CrowdAPI:
         else:
             return {"status": False, "code": req.status_code, "reason": req.content}
 
-
     def add_user_to_group(self, **kwargs):
 
         if "username" not in kwargs:
