@@ -283,7 +283,7 @@ class CrowdAPI:
     def create_user(self, **kwargs):
         user = {}
 
-        for k, v in kwargs.iteritems():
+        for k, v in kwargs.items():
             user[k.replace('_', '-')] = v
 
         if 'password' not in kwargs:
