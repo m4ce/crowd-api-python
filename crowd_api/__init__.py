@@ -8,7 +8,6 @@ import requests
 import json
 import random
 import string
-import logging
 
 
 class CrowdAPI:
@@ -85,8 +84,8 @@ class CrowdAPI:
         if "username" not in kwargs:
             raise ValueError("Must pass username")
 
-        req = self.api_get("/user/group/direct?username={}&max-results={}".format(
-            kwargs['username'], kwargs.get('max_results', 1000)))
+        req = self.api_get("/user/group/direct?username={}&max-results={}&start-index={}".format(
+            kwargs['username'], kwargs.get('max_results', 1000), kwargs.get('start_index', 0)))
         if req.status_code == 200:
             for group in req.json()['groups']:
                 groups.append(group['name'])
@@ -103,8 +102,8 @@ class CrowdAPI:
         if "groupname" not in kwargs:
             raise ValueError("Must pass username")
 
-        req = self.api_get("/group/user/direct?groupname={}&max-results={}".format(
-            kwargs['groupname'], kwargs.get('max_results', 1000)))
+        req = self.api_get("/group/user/direct?groupname={}&max-results={}}&start-index={}".format(
+            kwargs['groupname'], kwargs.get('max_results', 1000), kwargs.get('start_index', 0)))
         if req.status_code == 200:
             for user in req.json()['users']:
                 users.append(user['name'])
@@ -173,7 +172,8 @@ class CrowdAPI:
         groups = []
 
         req = self.api_get(
-            "/search?entity-type=group&max-results={}".format(kwargs.get('max_results', 1000)))
+            "/search?entity-type=group&max-results={}&start-index={}".format(
+                kwargs.get('max_results', 1000), kwargs.get('start_index', 0)))
 
         if req.status_code == 200:
             for group in req.json()['groups']:
@@ -192,7 +192,8 @@ class CrowdAPI:
             raise ValueError("You need to define a certian restriction")
 
         req = self.api_get(
-            "/search?entity-type=group&restriction={}&max-results={}".format(kwargs['restriction'], kwargs.get('max_results', 1000)))
+            "/search?entity-type=group&restriction={}&max-results={}&start-index={}".format(
+                kwargs['restriction'], kwargs.get('max_results', 1000), kwargs.get('start_index', 0)))
 
         if req.status_code == 200:
             for group in req.json()['groups']:
@@ -208,7 +209,8 @@ class CrowdAPI:
         users = []
 
         req = self.api_get(
-            "/search?entity-type=user&max-results={}".format(kwargs.get('max_results', 1000)))
+            "/search?entity-type=user&max-results={}&start-index={}".format(
+                kwargs.get('max_results', 1000), kwargs.get('start_index', 0)))
         if req.status_code == 200:
             for user in req.json()['users']:
                 users.append(user['name'])
@@ -223,10 +225,11 @@ class CrowdAPI:
         users = []
 
         if 'restriction' not in kwargs:
-            raise ValueError("You need to define a certian restriction")
+            raise ValueError("You need to define a certain restriction")
 
         req = self.api_get(
-            "/search?entity-type=user&restriction={}&max-results={}".format(kwargs['restriction'], kwargs.get('max_results', 1000)))
+            "/search?entity-type=user&restriction={}&max-results={}&start-index={}".format(
+                kwargs['restriction'], kwargs.get('max_results', 1000), kwargs.get('start_index', 0)))
         if req.status_code == 200:
             for user in req.json()['users']:
                 users.append(user['name'])
@@ -236,7 +239,6 @@ class CrowdAPI:
             return {"status": False, "users": []}
         else:
             return {"status": False, "code": req.status_code, "reason": req.content}
-
 
     def set_user_attribute(self, **kwargs):
         if "username" not in kwargs:
@@ -278,7 +280,6 @@ class CrowdAPI:
             return {"status": True}
         else:
             return {"status": False, "code": req.status_code, "reason": req.content}
-
 
     def create_user(self, **kwargs):
         user = {}
