@@ -81,5 +81,12 @@ req = crowd.set_user_activity(username="foobar", active=False)
 ## Examples
 Under the examples directory, there's an example which implements bulk users creation.
 
+## mTLS support
+Mutual TLS authentication is supported by adding the parameters `ssl_cert` and `ssl_key` to the constructor:
+```
+crowd = CrowdAPI(api_url = "https://<uri>/crowd/rest/usermanagement/latest", app_name = "crowd", app_password = "secure", ssl_cert= "/path/to/cert.pem", ssl_key = "/path/to/key.pem")
+```
+Both parameters need to be set jointly - key-cert pem-combinations are not supported. 
+
 ## Contact
 Matteo Cerutti - matteo.cerutti@hotmail.co.uk
