@@ -36,6 +36,7 @@ class CrowdAPI:
             self.timeout = kwargs['timeout']
 
         self.mtls = True
+        self.ssl_cert = None
         mtls_error = "Inconsistent mTLS configuration: Set both ssl_cert and ssl_key, or neither."
         if 'ssl_cert' not in kwargs:
             self.mtls = False
