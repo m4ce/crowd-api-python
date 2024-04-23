@@ -35,24 +35,53 @@ class CrowdAPI:
         else:
             self.timeout = kwargs['timeout']
 
+        self.mtls = True
+        self.ssl_cert = None
+        mtls_error = "Inconsistent mTLS configuration: Set both ssl_cert and ssl_key, or neither."
+        if 'ssl_cert' not in kwargs:
+            self.mtls = False
+        else:
+            self.ssl_cert = kwargs['ssl_cert']
+
+        if 'ssl_key' not in kwargs:
+            if self.ssl_cert:
+                raise ValueError(mtls_error)
+        else:
+            if not self.ssl_cert:
+                raise ValueError(mtls_error)
+            self.ssl_key = kwargs['ssl_key']
+
+    def _get_cert(self):
+        cert = None
+        if self.mtls:
+            cert = (self.ssl_cert, self.ssl_key)
+        return cert
+
     def api_get(self, query):
-        req = requests.get(self.api_url + query, headers={"Content-Type": "application/json",
-                                                          "Accept": "application/json"}, auth=self.auth, verify=self.verify_ssl, timeout=self.timeout)
+        req = requests.get(self.api_url + query,
+                           headers={"Content-Type": "application/json", "Accept": "application/json"},
+                           auth=self.auth, verify=self.verify_ssl, timeout=self.timeout, cert=self._get_cert())
         return req
 
     def api_post(self, query, data):
-        req = requests.post(self.api_url + query, headers={"Content-Type": "application/json", "Accept": "application/json"},
-                            auth=self.auth, data=json.dumps(data), verify=self.verify_ssl, timeout=self.timeout)
+        req = requests.post(self.api_url + query,
+                            headers={"Content-Type": "application/json", "Accept": "application/json"},
+                            auth=self.auth, data=json.dumps(data), verify=self.verify_ssl, timeout=self.timeout,
+                            cert=self._get_cert())
         return req
-    
+
     def api_put(self, query, data):
-        req = requests.put(self.api_url + query, headers={"Content-Type": "application/json", "Accept": "application/json"},
-                            auth=self.auth, data=json.dumps(data), verify=self.verify_ssl, timeout=self.timeout)
+        req = requests.put(self.api_url + query,
+                           headers={"Content-Type": "application/json", "Accept": "application/json"},
+                           auth=self.auth, data=json.dumps(data), verify=self.verify_ssl, timeout=self.timeout,
+                           cert=self._get_cert())
         return req
 
     def api_delete(self, query, data):
-        req = requests.delete(self.api_url + query, headers={"Content-Type": "application/json", "Accept": "application/json"},
-                              auth=self.auth, data=json.dumps(data), verify=self.verify_ssl, timeout=self.timeout)
+        req = requests.delete(self.api_url + query,
+                              headers={"Content-Type": "application/json", "Accept": "application/json"},
+                              auth=self.auth, data=json.dumps(data), verify=self.verify_ssl, timeout=self.timeout,
+                              cert=self._get_cert())
         return req
 
     def get_user(self, **kwargs):
