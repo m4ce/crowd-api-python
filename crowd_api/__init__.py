@@ -102,7 +102,7 @@ class CrowdAPI:
         if "groupname" not in kwargs:
             raise ValueError("Must pass username")
 
-        req = self.api_get("/group/user/direct?groupname={}&max-results={}}&start-index={}".format(
+        req = self.api_get("/group/user/direct?groupname={}&max-results={}&start-index={}".format(
             kwargs['groupname'], kwargs.get('max_results', 1000), kwargs.get('start_index', 0)))
         if req.status_code == 200:
             for user in req.json()['users']:
