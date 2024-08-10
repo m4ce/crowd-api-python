@@ -8,6 +8,7 @@ import requests
 import json
 import random
 import string
+from urllib.parse import urlencode
 
 
 class CrowdAPI:
@@ -162,6 +163,34 @@ class CrowdAPI:
             for group in req.json()['groups']:
                 groups.append(group['name'])
 
+            return {"status": True, "groups": groups}
+        if req.status_code == 404:
+            return {"status": False, "groups": []}
+        else:
+            return {"status": False, "code": req.status_code, "reason": req.content}
+
+    def get_nested_parent_groups(self, **kwargs) -> dict:
+        """Retrieve the groups that are nested parents of the specified group."""
+        endpoint = "/group/parent-group/nested"
+
+        if "groupname" not in kwargs:
+            raise ValueError("Must pass groupname")
+
+        params = {'groupname': kwargs['groupname']}
+
+        if kwargs.get('max_results') is not None:
+            params['max-results'] = kwargs.get('max_results')
+        if kwargs.get('start_index') is not None:
+            params['start-index'] = kwargs.get('start_index')
+
+        query = f"{endpoint}?{urlencode(params)}"
+
+        req = self.crowd.api_get(query)
+
+        groups = []
+        if req.status_code == 200:
+            for group in req.json()['groups']:
+                groups.append(group['name'])
             return {"status": True, "groups": groups}
         if req.status_code == 404:
             return {"status": False, "groups": []}
